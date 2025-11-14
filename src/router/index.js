@@ -8,7 +8,6 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes
 });
-router.push('/register')
 router.beforeEach((to, from, next) => {
   console.log('to', to);
   console.log('from', from);
