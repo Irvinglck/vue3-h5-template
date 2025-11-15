@@ -1,14 +1,24 @@
 import Layout from "@/layout/index.vue";
 import Demo from "@/views/demo/index.vue";
 import Register from "@/views/auth/Register.vue";
+import Login from "@/views/auth/Login.vue";
 
 const routes = [
+
   // 1. 布局外路由（注册/登录）
   {
-    path: '/register',
+    path: '/',
     name: 'Register',
     component: Register,
-    // redirect: { name: "Register" },
+    meta: {
+      hideTabbar: true
+    }
+  },
+  // 2. 布局外路由（注册/登录）
+  {
+    path: '/Login',
+    name: 'Login',
+    component: Login,
     meta: {
       hideTabbar: true
     }
@@ -17,7 +27,7 @@ const routes = [
     path: "/",
     name: "root",
     component: Layout,
-    // redirect: { name: "Demo" },
+    redirect: { name: "Demo" },
     children: [
       {
         path: "demo",
