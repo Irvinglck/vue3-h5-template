@@ -21,21 +21,14 @@ const route = useRoute()
 const active = ref(0);
 const tabbarData = reactive([
     
-// {
-//     icon: "wap-home-o",
-//     title: "主页",
-//     to: {
-//       name: "Register"
-//     }
-//   },
   
-  {
-    icon: "wap-home-o",
-    title: "主页",
-    to: {
-      name: "Demo"
-    }
-  },
+  // {
+  //   icon: "wap-home-o",
+  //   title: "主页",
+  //   to: {
+  //     name: "Demo"
+  //   }
+  // },
   {
     icon: "gem-o",
     title: "工具",

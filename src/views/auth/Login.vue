@@ -209,12 +209,13 @@ const handleLogin = async () => {
 
 // 找回密码
 const handleForgotPassword = () => {
-  router.push('/forgot-password');
+  router.push('/RPassword');
 };
 
 // 前往注册
 const handleRegister = () => {
-  router.push('/');
+//   router.push('/register');
+  router.push('/about');
 };
 </script>
 

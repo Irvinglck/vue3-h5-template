@@ -307,7 +307,7 @@ const handleRegister = async () => {
 
 // 前往登录页面
 const goToLogin = () => {
-  router.push('/login');
+  router.push('/');
 };
 </script>
 

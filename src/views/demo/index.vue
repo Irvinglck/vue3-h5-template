@@ -1,258 +1,254 @@
-<!-- <script setup name="Demo">
-import { reactive } from "vue";
-
-const contentList = reactive([
-  "✔ ⚡ Vue3 + Vite4",
-  "✔ ✨ Vant4 组件库",
-  "✔ 🌀 Tailwindcss 原子类框架",
-  "✔ 🍍 Pinia 状态管理",
-  "✔ 🌓 支持深色模式",
-  "✔ Vue-router 4",
-  "✔ 支持 SVG 图标自动注册组件",
-  "✔ vmin 视口适配",
-  "✔ Axios 封装",
-  "✔ 打包资源 gzip 压缩",
-  "✔ 开发环境支持 Mock 数据",
-  "✔ ESLint",
-  "✔ 首屏加载动画",
-  "✔ 开发环境调试面板"
-]);
-</script> -->
-
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-blue-500 to-blue-300 flex flex-col items-center py-8 px-4">
-    <!-- 学校Logo和名称 -->
-    <div class="flex flex-col items-center mb-10">
-      <div class="w-20 h-20 rounded-full bg-white p-2 mb-3 shadow-md">
-        <img src="https://p26-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/8d581ffb359a40cfa56b9718130d1016.png~tplv-a9rns2rl98-24:720:720.png?rcl=202511141556074BC8AE7E5DDE08F6C63A&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1763711768&x-signature=rlVflfHEzBBagBRuaJTpY5bRbS8%3D" 
-             alt="校徽" 
-             class="w-full h-full object-contain">
+  <div class="student-center">
+    <!-- 顶部欢迎区域 -->
+    <div class="welcome-bar">
+      <div class="welcome-info">
+        <h2 class="welcome-text">Hi, {{ userInfo.name }}同学</h2>
+        <p class="welcome-desc">欢迎访问常州纺织服装职业技术学院</p>
       </div>
-      <h1 class="text-white text-xl font-semibold">常州纺织服装职业技术学院</h1>
+      <div class="avatar-container">
+        <van-image 
+          round 
+          :src="userInfo.avatar || defaultAvatar" 
+          alt="用户头像"
+          class="avatar"
+          @click="handleAvatarClick"
+        />
+      </div>
     </div>
 
-    <!-- 登录卡片 -->
-    <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 md:p-8">
-      <h2 class="text-2xl font-bold text-center mb-8">考生登录</h2>
-      
-      <form @submit.prevent="handleLogin" class="space-y-6">
-        <!-- 身份证号输入 -->
-        <div>
-          <label for="idCard" class="block text-gray-700 mb-2 text-sm">身份证号</label>
-          <div class="relative">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
-            </span>
-            <input 
-              type="text" 
-              id="idCard" 
-              v-model="form.idCard"
-              :class="{'border-red-500': errors.idCard}"
-              class="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-              placeholder="请输入身份证号"
-            >
-          </div>
-          <p v-if="errors.idCard" class="text-red-500 text-xs mt-1">{{ errors.idCard }}</p>
-        </div>
+    <!-- 功能列表 -->
+    <van-list class="function-list" v-if="!loading">
+      <van-cell 
+        v-for="(item, index) in functionItems" 
+        :key="index"
+        :title="item.title"
+        :label="item.desc"
+        :icon="item.icon"
+        is-link
+        @click="handleFunctionClick(item)"
+        class="function-item"
+      />
+    </van-list>
 
-        <!-- 密码输入 -->
-        <div>
-          <label for="password" class="block text-gray-700 mb-2 text-sm">密码</label>
-          <div class="relative">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-              </svg>
-            </span>
-            <input 
-              :type="showPassword ? 'text' : 'password'" 
-              id="password" 
-              v-model="form.password"
-              :class="{'border-red-500': errors.password}"
-              class="w-full pl-10 pr-10 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-              placeholder="请输入密码"
-            >
-            <button 
-              type="button" 
-              @click="showPassword = !showPassword"
-              class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path v-if="!showPassword" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path v-if="!showPassword" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                <path v-if="showPassword" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M23 8l-6 6 6 6V8z" />
-                <path v-if="showPassword" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l-1.5 1.5L14 8" />
-              </svg>
-            </button>
-          </div>
-          <p v-if="errors.password" class="text-red-500 text-xs mt-1">{{ errors.password }}</p>
-        </div>
+    <!-- 加载状态 -->
+    <van-loading v-if="loading" class="loading" type="spinner" color="#1677ff" />
 
-        <!-- 找回密码 -->
-        <div class="text-right">
-          <button 
-            type="button" 
-            @click="handleForgotPassword"
-            class="text-blue-500 hover:text-blue-700 text-sm transition-colors"
-          >
-            找回密码
-          </button>
-        </div>
+    <!-- 错误提示 -->
+    <van-empty 
+      v-if="error" 
+      description="获取数据失败，请重试"
+      class="error-empty"
+    >
+      <van-button type="primary" @click="fetchUserInfo">重新加载</van-button>
+    </van-empty>
 
-        <!-- 登录按钮 -->
-        <button 
-          type="submit" 
-          :disabled="isLoading"
-          class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-medium transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
-        >
-          <span v-if="!isLoading">登录</span>
-          <span v-if="isLoading" class="flex items-center">
-            <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            登录中...
-          </span>
-        </button>
-
-        <!-- 注册按钮 -->
-        <button 
-          type="button" 
-          @click="handleRegister"
-          class="w-full border border-blue-500 text-blue-500 hover:bg-blue-50 py-3 rounded-lg font-medium transition-all"
-        >
-          前往注册
-        </button>
-      </form>
-    </div>
-
-    <!-- 错误提示弹窗 -->
-    <div v-if="showError" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-red-500 text-white px-4 py-3 rounded-lg shadow-lg z-50 animate-slide-up">
-      {{ errorMessage }}
-    </div>
+    <!-- 退出登录确认弹窗 -->
+    <van-dialog
+      v-model:show="showLogoutDialog"
+      title="确认退出"
+      message="确定要退出登录吗？"
+      show-cancel-button
+      @confirm="handleLogout"
+    />
   </div>
 </template>
 
 <script setup name="Demo">
-import { ref, reactive } from 'vue';
+import { ref, onMounted, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
+import { List, Cell, Image, Loading, Empty, Dialog, Button } from 'vant';
+import 'vant/lib/index.css';
 
 // 路由实例
 const router = useRouter();
 
-// 表单数据
-const form = reactive({
-  idCard: '',
-  password: ''
-});
-
 // 状态管理
-const showPassword = ref(false);
-const isLoading = ref(false);
-const showError = ref(false);
-const errorMessage = ref('');
-const errors = reactive({
-  idCard: '',
-  password: ''
+const loading = ref(true);
+const error = ref(false);
+const showLogoutDialog = ref(false);
+const defaultAvatar = 'https://p26-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/4b82b848c57b4676bd9ee921b52e608a.png~tplv-a9rns2rl98-24:720:720.png';
+
+// 用户信息
+const userInfo = reactive({
+  name: '',
+  avatar: ''
 });
 
-// 表单验证
-const validateForm = () => {
-  let isValid = true;
-  errors.idCard = '';
-  errors.password = '';
-
-  // 身份证号验证 (简单验证18位数字)
-  const idCardReg = /(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-  if (!form.idCard) {
-    errors.idCard = '请输入身份证号';
-    isValid = false;
-  } else if (!idCardReg.test(form.idCard)) {
-    errors.idCard = '请输入有效的18位身份证号';
-    isValid = false;
+// 功能列表数据
+const functionItems = reactive([
+  {
+    title: '报名详情',
+    desc: '',
+    icon: 'user-o',
+    path: '/enrollment-details'
+  },
+  {
+    title: '缴费',
+    desc: '缴费时间 2025-03-06 00:00:00 - 2025-06-30 00:00:00',
+    icon: 'balance-o',
+    path: '/payment'
+  },
+  {
+    title: '成绩查询',
+    desc: '查询时间 2025-03-06 00:00:00 - 2025-06-30 00:00:00',
+    icon: 'file-text-o',
+    path: '/score-query'
+  },
+  {
+    title: '预录取查询',
+    desc: '查询时间 2025-03-06 00:00:00 - 2025-06-30 00:00:00',
+    icon: 'chart-trending-o',
+    path: '/admission-query'
+  },
+  {
+    title: '打印准考证',
+    desc: '',
+    icon: 'printer-o',
+    path: '/print-ticket'
+  },
+  {
+    title: '退出登录',
+    desc: '',
+    icon: 'logout',
+    path: 'logout'
   }
+]);
 
-  // 密码验证
-  if (!form.password) {
-    errors.password = '请输入密码';
-    isValid = false;
-  } else if (form.password.length < 6) {
-    errors.password = '密码长度不能少于6位';
-    isValid = false;
-  }
-
-  return isValid;
-};
-
-// 显示错误信息
-const showErrorMessage = (message) => {
-  errorMessage.value = message;
-  showError.value = true;
-  setTimeout(() => {
-    showError.value = false;
-  }, 3000);
-};
-
-// 登录处理
-const handleLogin = async () => {
-  if (!validateForm()) return;
-
+// 获取用户信息
+const fetchUserInfo = async () => {
+  loading.value = true;
+  error.value = false;
+  
   try {
-    isLoading.value = true;
-    
-    // 调用登录接口
-    const response = await axios.post('/api/student/login', {
-      idCard: form.idCard,
-      password: form.password
-    });
-
-    // 登录成功处理
-    if (response.data.code === 200) {
-      // 存储token和用户信息
-      localStorage.setItem('token', response.data.data.token);
-      localStorage.setItem('userInfo', JSON.stringify(response.data.data.user));
-      
-      // 跳转到首页
-      router.push('/home');
+    // 调用获取用户信息接口
+    const response = await axios.get('/api/user/info');
+    if (response.data.success) {
+      userInfo.name = response.data.data.name || '同学';
+      userInfo.avatar = response.data.data.avatar;
     } else {
-      showErrorMessage(response.data.message || '登录失败，请重试');
+      throw new Error(response.data.message || '获取用户信息失败');
     }
-  } catch (error) {
-    console.error('登录请求失败:', error);
-    showErrorMessage(error.response?.data?.message || '网络异常，请稍后重试');
+  } catch (err) {
+    console.error('获取用户信息失败:', err);
+    error.value = true;
   } finally {
-    isLoading.value = false;
+    loading.value = false;
   }
 };
 
-// 找回密码
-const handleForgotPassword = () => {
-  router.push('/forgot-password');
+// 处理功能项点击
+const handleFunctionClick = (item) => {
+  if (item.path === 'logout') {
+    // 退出登录
+    showLogoutDialog.value = true;
+  } else {
+    // 跳转到对应页面
+    router.push(item.path);
+  }
 };
 
-// 前往注册
-const handleRegister = () => {
-  router.push('/register');
+// 处理退出登录
+const handleLogout = async () => {
+  try {
+    // 调用退出登录接口
+    await axios.post('/api/logout');
+    // 清除本地存储的token
+    localStorage.removeItem('token');
+    // 跳转到登录页
+    router.push('/login');
+  } catch (err) {
+    console.error('退出登录失败:', err);
+    Dialog.alert({
+      message: '退出登录失败，请重试'
+    });
+  }
 };
+
+// 处理头像点击
+const handleAvatarClick = () => {
+  router.push('/profile');
+};
+
+// 页面加载时获取用户信息
+onMounted(() => {
+  // 检查是否已登录
+  const token = localStorage.getItem('token');
+  if (!token) {
+    router.push('/login');
+    return;
+  }
+  
+  fetchUserInfo();
+});
 </script>
 
 <style scoped>
-/* 动画效果 */
-@keyframes slideUp {
-  from {
-    transform: translate(-50%, 20px);
-    opacity: 0;
-  }
-  to {
-    transform: translate(-50%, 0);
-    opacity: 1;
-  }
+.student-center {
+  min-height: 100vh;
+  background-color: #f5f7fa;
 }
 
-.animate-slide-up {
-  animation: slideUp 0.3s ease-out forwards;
+/* 欢迎区域样式 */
+.welcome-bar {
+  background: linear-gradient(135deg, #409eff, #69b1ff);
+  padding: 30px 16px 20px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.welcome-info {
+  padding-bottom: 5px;
+}
+
+.welcome-text {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.welcome-desc {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.avatar-container {
+  margin-bottom: -25px;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 功能列表样式 */
+.function-list {
+  margin-top: 30px;
+  background-color: transparent;
+}
+
+.function-item {
+  margin-bottom: 10px;
+  background-color: white;
+  border-radius: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* 加载状态样式 */
+.loading {
+  margin: 50px auto;
+  display: block;
+}
+
+/* 错误提示样式 */
+.error-empty {
+  padding-top: 50px;
 }
 </style>
