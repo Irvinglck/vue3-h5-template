@@ -219,6 +219,7 @@ onMounted(() => {
   margin-bottom: -25px;
 }
 
+
 .avatar {
   width: 50px;
   height: 50px;
