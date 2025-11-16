@@ -141,6 +141,7 @@ const fetchUserInfo = async () => {
     if (response.data.status) {
       userInfo.name = response.data.data.name || '同学';
       userInfo.avatar = response.data.data.avatar;
+      
     } else {
       throw new Error(response.data.message || '获取用户信息失败');
     }
@@ -159,8 +160,9 @@ const handleFunctionClick = (item) => {
     showLogoutDialog.value = true;
     router.push('/');
   } else {
+    router.push('/serveritems/detail')
     // 跳转到对应页面
-    router.push(item.path);
+    // router.push(item.path);
   }
 };
 

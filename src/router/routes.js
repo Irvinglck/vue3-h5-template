@@ -33,6 +33,16 @@ const routes = [
       hideTabbar: true
     }
   },
+  //报名详情
+  {
+    path: "/serveritems/detail",
+    name: "Detail",
+    component: () => import("@/views/serveritems/detail/index.vue"),
+    meta: {
+      title: "报名信息",
+
+    }
+  },
   {
     path: "/",
     name: "root",
@@ -76,6 +86,7 @@ const routes = [
           ideTabbar: false
         }
       }
+
     ]
   }
 ];
