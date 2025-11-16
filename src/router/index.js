@@ -9,9 +9,7 @@ const router = createRouter({
   routes
 });
 router.beforeEach((to, from, next) => {
-  console.log('to', to);
-  console.log('from', from);
-  console.log('next', next);
+
   NProgress.start();
   // 路由缓存
   useCachedViewStoreHook().addCachedView(to);

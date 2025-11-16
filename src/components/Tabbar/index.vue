@@ -31,14 +31,14 @@ const tabbarData = reactive([
   // },
   {
     icon: "gem-o",
-    title: "工具",
+    title: "服务",
     to: {
       name: "Tools"
     }
   },
   {
     icon: "user-o",
-    title: "关于",
+    title: "我",
     to: {
       name: "About"
     }

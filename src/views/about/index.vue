@@ -6,7 +6,7 @@
         <h2 class="welcome-text">Hi, {{ userInfo.name }}同学</h2>
         <p class="welcome-desc">欢迎访问常州纺织服装职业技术学院</p>
       </div>
-      <div class="avatar-container">
+      <!-- <div class="avatar-container">
         <van-image 
           round 
           :src="userInfo.avatar || defaultAvatar" 
@@ -14,11 +14,11 @@
           class="avatar"
           @click="handleAvatarClick"
         />
-      </div>
+      </div> -->
     </div>
 
     <!-- 功能列表 -->
-    <van-list class="function-list" v-if="!loading">
+    <!-- <van-list class="function-list" v-if="!loading">
       <van-cell 
         v-for="(item, index) in functionItems" 
         :key="index"
@@ -29,19 +29,31 @@
         @click="handleFunctionClick(item)"
         class="function-item"
       />
+    </van-list> -->
+
+      <van-list class="function-list" v-if="!loading">
+      <van-cell 
+        v-for="(item, index) in functionItems" 
+        :key="index"
+        :title="item.title"
+        :label="item.desc"
+        is-link
+        @click="handleFunctionClick(item)"
+        class="function-item"
+      />
     </van-list>
 
     <!-- 加载状态 -->
     <van-loading v-if="loading" class="loading" type="spinner" color="#1677ff" />
 
     <!-- 错误提示 -->
-    <van-empty 
+    <!-- <van-empty 
       v-if="error" 
       description="获取数据失败，请重试"
       class="error-empty"
     >
       <van-button type="primary" @click="fetchUserInfo">重新加载</van-button>
-    </van-empty>
+    </van-empty> -->
 
     <!-- 退出登录确认弹窗 -->
     <van-dialog
@@ -193,8 +205,8 @@ onMounted(() => {
 
 /* 欢迎区域样式 */
 .welcome-bar {
-  background: linear-gradient(135deg, #409eff, #69b1ff);
-  padding: 30px 16px 20px;
+  background: linear-gradient(178deg, #409eff, #f3f4f5);
+  padding: 30px 16px 30px;
   color: white;
   display: flex;
   justify-content: space-between;
@@ -229,7 +241,7 @@ onMounted(() => {
 
 /* 功能列表样式 */
 .function-list {
-  margin-top: 30px;
+  margin-top: -20px;
   background-color: transparent;
 }
 
@@ -241,7 +253,9 @@ onMounted(() => {
   margin-right: 10px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
-
+.van-cell{
+  width: 94%;
+}
 /* 加载状态样式 */
 .loading {
   margin: 50px auto;

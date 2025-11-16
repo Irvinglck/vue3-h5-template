@@ -195,7 +195,7 @@ const handleLogin = async () => {
       localStorage.setItem('userInfo', JSON.stringify(response.data.data));
       
       // 跳转到首页
-      router.push('/about');
+      router.push('/tools');
     } else {
       showErrorMessage(response.data.message || '登录失败，请重试');
     }
