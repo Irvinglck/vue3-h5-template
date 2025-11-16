@@ -22,10 +22,14 @@
     "lint:prettier": "prettier --write  \"src/**/*.{js,json,jsx,css,less,scss,vue,html,md}\""
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/vue-fontawesome": "^3.1.2",
     "axios": "^1.7.2",
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
+    "pnpm": "^10.22.0",
     "vant": "^4.9.0",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2"

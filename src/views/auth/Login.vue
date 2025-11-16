@@ -183,7 +183,7 @@ const handleLogin = async () => {
     isLoading.value = true;
     
     // 调用登录接口
-    const response = await axios.post('/api/student/login', {
+    const response = await axios.post('/api/stu/stuLogin', {
       idCard: form.idCard,
       password: form.password
     });
@@ -192,10 +192,10 @@ const handleLogin = async () => {
     if (response.data.code === 200) {
       // 存储token和用户信息
       localStorage.setItem('token', response.data.data.token);
-      localStorage.setItem('userInfo', JSON.stringify(response.data.data.user));
+      localStorage.setItem('userInfo', JSON.stringify(response.data.data));
       
       // 跳转到首页
-      router.push('/home');
+      router.push('/about');
     } else {
       showErrorMessage(response.data.message || '登录失败，请重试');
     }
@@ -214,8 +214,8 @@ const handleForgotPassword = () => {
 
 // 前往注册
 const handleRegister = () => {
-//   router.push('/register');
-  router.push('/about');
+  router.push('/register');
+  // router.push('/about');
 };
 </script>
 

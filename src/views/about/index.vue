@@ -123,7 +123,7 @@ const fetchUserInfo = async () => {
   
   try {
     // 调用获取用户信息接口
-    const response = await axios.get('/api/user/info');
+    const response = await axios.get('/api/stu/info');
     if (response.data.success) {
       userInfo.name = response.data.data.name || '同学';
       userInfo.avatar = response.data.data.avatar;
@@ -143,6 +143,7 @@ const handleFunctionClick = (item) => {
   if (item.path === 'logout') {
     // 退出登录
     showLogoutDialog.value = true;
+    router.push('/');
   } else {
     // 跳转到对应页面
     router.push(item.path);
@@ -218,7 +219,6 @@ onMounted(() => {
 .avatar-container {
   margin-bottom: -25px;
 }
-
 
 .avatar {
   width: 50px;
